@@ -4,8 +4,6 @@ on:
   workflow_dispatch:
   pull_request:
     branches: [ master ]
-  push:
-    branches: [ master ]
     paths: [ .github/workflows/bot.yml, Bot/** ]
 
 jobs:
@@ -14,6 +12,7 @@ jobs:
     name: Build
     permissions:
       packages: write
+      pull-requests: write
 
     steps:
       - uses: actions/checkout@v4
