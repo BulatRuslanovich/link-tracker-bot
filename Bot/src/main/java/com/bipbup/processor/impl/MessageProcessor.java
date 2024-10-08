@@ -21,7 +21,7 @@ public class MessageProcessor implements Processor {
         var chatId = update.message().chat().id();
         var notSupportedMessage = new SendMessage(chatId, UNSUPPORTED_COMMAND);
 
-        if (update.message().text() != null) {
+        if (update.message().text() == null) {
             return notSupportedMessage;
         }
 

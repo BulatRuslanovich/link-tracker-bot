@@ -33,7 +33,7 @@ public class ListCommand implements Command {
             return new SendMessage(chatId, sendMessage);
         }
 
-        return new SendMessage(chatId, "Incorrect command");
+        return new SendMessage(chatId, DEFAULT_INCORRECT_COMMAND);
     }
 
     private String buildListOfLinks(List<String> links) {
