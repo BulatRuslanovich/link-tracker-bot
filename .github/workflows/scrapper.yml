@@ -1,4 +1,4 @@
-name: Bot Build
+name: Scrapper Build
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
     branches: [ master ]
   push:
     branches: [ master ]
-    paths: [ .github/workflows/bot.yml, Bot/** ]
+    paths: [ .github/workflows/scrapper.yml, Scrapper/** ]
 
 jobs:
   build:
@@ -24,7 +24,7 @@ jobs:
           cache: maven
 
       - name: maven build
-        run: mvn -pl Bot -am package
+        run: mvn -pl Scrapper -am package
 
       - id: jacoco
         uses: madrapps/jacoco-report@v1.6.1
@@ -50,7 +50,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - run: mvn -pl Bot -am checkstyle:check
+      - run: mvn -pl Scrapper -am checkstyle:check
 
   integration-test:
     name: integration tests
@@ -64,5 +64,5 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - run: mvn -pl Bot -am verify -Dskip.unit.tests=true
+      - run: mvn -pl Scrapper -am verify -Dskip.unit.tests=true
 
