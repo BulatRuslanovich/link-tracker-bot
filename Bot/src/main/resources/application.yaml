@@ -1,0 +1,11 @@
+bot:
+  token: unset
+server:
+  port: 9090
+spring:
+  application:
+    name: Bot
+  jackson:
+    time-zone: UTC
+logging:
+  config: classpath:log4j2-plain.xml
