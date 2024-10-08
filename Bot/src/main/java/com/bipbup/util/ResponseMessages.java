@@ -2,7 +2,7 @@ package com.bipbup.util;
 
 import java.util.List;
 
-public class ResponseMessages {
+public final class ResponseMessages {
     private ResponseMessages() {
     }
 
@@ -31,7 +31,8 @@ public class ResponseMessages {
     public static final String UNTRACK_INCORRECT_COMMAND =
             "The command contains extra characters! Please use the format: */untrack* {resource to untrack}.";
     public static final String UNTRACK_INCORRECT_FORMAT = "Please use the format: */untrack* {resource to untrack}.";
-    public static final String UNSUPPORTED_COMMAND = "Unsupported command. Please use */help* to view the available commands.";
+    public static final String UNSUPPORTED_COMMAND =
+            "Unsupported command. Please use */help* to view the available commands.";
     public static final List<String> DUMMY_LINKS = List.of(DUMMY_GITHUB, DUMMY_STACKOVERFLOW);
     public static final String LIST_TITLE = "Tracked resources:\n";
     public static final String WELCOME_TITLE = "Hello, %s!\n";

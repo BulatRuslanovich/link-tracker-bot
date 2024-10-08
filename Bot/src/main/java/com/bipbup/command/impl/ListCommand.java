@@ -9,7 +9,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.bipbup.util.ResponseMessages.*;
+import static com.bipbup.util.ResponseMessages.DEFAULT_INCORRECT_COMMAND;
+import static com.bipbup.util.ResponseMessages.DUMMY_LINKS;
+import static com.bipbup.util.ResponseMessages.LIST_COMMAND;
+import static com.bipbup.util.ResponseMessages.LIST_DESCRIPTION;
+import static com.bipbup.util.ResponseMessages.LIST_TITLE;
 
 @Component
 public class ListCommand implements Command {
