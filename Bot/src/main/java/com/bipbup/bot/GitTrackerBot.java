@@ -1,6 +1,6 @@
 package com.bipbup.bot;
 
-import com.bipbup.menu.CommandsMenu;
+import com.bipbup.bot.menu.CommandsMenu;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import jakarta.annotation.PostConstruct;

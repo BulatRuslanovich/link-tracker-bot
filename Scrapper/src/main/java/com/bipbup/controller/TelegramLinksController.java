@@ -30,7 +30,7 @@ public class TelegramLinksController {
     private final DeleteLinkService deleteLinkService;
 
     @GetMapping
-    public ListLinksResponse getLinks(
+    public ListLinksResponse getLink(
             @Valid
             @Min(value = 0, message = "ID should be more or equal 0")
             @RequestHeader("Tg-Chat-Id")
@@ -40,7 +40,7 @@ public class TelegramLinksController {
     }
 
     @PostMapping
-    public LinkResponse postLinks(
+    public LinkResponse postLink(
             @Valid
             @Min(value = 0, message = "ID should be more or equal 0")
             @RequestHeader("Tg-Chat-Id")
@@ -52,7 +52,7 @@ public class TelegramLinksController {
     }
 
     @DeleteMapping
-    public LinkResponse postLinks(
+    public LinkResponse deleteLink(
             @Valid
             @Min(value = 0, message = "ID should be more or equal 0")
             @RequestHeader("Tg-Chat-Id")

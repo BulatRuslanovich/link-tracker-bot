@@ -1,5 +1,6 @@
 package com.bipbup.controller;
 
+import com.bipbup.service.chat.AddTelegramChatService;
 import com.bipbup.service.chat.DeleteTelegramChatService;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -13,14 +14,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/tg-chat")
 public class TelegramChatsController {
+
     private final DeleteTelegramChatService deleteTelegramChatService;
+
+    private final AddTelegramChatService addTelegramChatService;
+
 
     @PostMapping("{id}")
     public void postTgChat(
-            @Min(value = 0, message = "ID should be more or equal 0")
+            @Min(value = 0, message = "{error.id_is_null:null}")
             @PathVariable
             long id
-    ) { /* TODO document why this method is empty */ }
+    ) {
+        addTelegramChatService.addChat(id);
+    }
 
     @DeleteMapping("{id}")
     public void deleteTgChat(
@@ -28,6 +35,6 @@ public class TelegramChatsController {
             @PathVariable
             long id
     ) {
-        deleteTelegramChatService.validateChatId(id);
+        deleteTelegramChatService.deleteChat(id);
     }
 }

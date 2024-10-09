@@ -1,9 +1,9 @@
 package com.bipbup.bot;
 
 import com.bipbup.command.Command;
-import com.bipbup.processor.BotMessageProcessor;
-import com.bipbup.processor.impl.BotTextMessageProcessor;
-import com.bipbup.sender.Sender;
+import com.bipbup.bot.processor.BotMessageProcessor;
+import com.bipbup.bot.processor.impl.BotTextMessageProcessor;
+import com.bipbup.bot.sender.Sender;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
 import org.springframework.stereotype.Component;

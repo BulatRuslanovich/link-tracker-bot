@@ -7,11 +7,12 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 @Service
 public class DeleteLinkService {
 
-    @SneakyThrows
+    @SneakyThrows(URISyntaxException.class)
     public LinkResponse deleteLink(long tgChatId, RemoveLinkRequest removeLinkRequest) {
         checkLink(removeLinkRequest.link());
 

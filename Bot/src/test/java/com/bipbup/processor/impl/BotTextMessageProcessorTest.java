@@ -1,5 +1,6 @@
 package com.bipbup.processor.impl;
 
+import com.bipbup.bot.processor.impl.BotTextMessageProcessor;
 import com.bipbup.command.impl.ListCommand;
 import com.bipbup.command.impl.StartCommand;
 import com.bipbup.command.impl.TrackCommand;
