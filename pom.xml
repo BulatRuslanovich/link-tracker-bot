@@ -58,8 +58,8 @@
             </dependency>
             <dependency>
                 <groupId>org.wiremock</groupId>
-                <artifactId>wiremock</artifactId>
-                <version>${wiremock.version}</version>
+                <artifactId>wiremock-standalone</artifactId>
+                <version>3.3.1</version>
             </dependency>
 
             <dependency>
