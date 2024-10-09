@@ -5,7 +5,11 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Component;
 
-import static com.bipbup.util.ResponseMessages.*;
+import static com.bipbup.util.ResponseMessages.DEFAULT_INCORRECT_COMMAND;
+import static com.bipbup.util.ResponseMessages.START_COMMAND;
+import static com.bipbup.util.ResponseMessages.START_DESCRIPTION;
+import static com.bipbup.util.ResponseMessages.WELCOME_MESSAGE;
+import static com.bipbup.util.ResponseMessages.WELCOME_TITLE;
 
 @Component
 public class StartCommand implements Command {

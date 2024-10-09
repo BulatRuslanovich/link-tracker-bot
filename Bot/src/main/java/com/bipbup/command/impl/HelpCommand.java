@@ -12,9 +12,12 @@ import static com.bipbup.util.ResponseMessages.DEFAULT_INCORRECT_COMMAND;
 import static com.bipbup.util.ResponseMessages.HELP_COMMAND;
 import static com.bipbup.util.ResponseMessages.HELP_DESCRIPTION;
 
+
 @Component
 @RequiredArgsConstructor
 public class HelpCommand implements Command {
+
+    private static final String DELIMITER = " - ";
 
     private final List<Command> commands;
 
@@ -36,13 +39,13 @@ public class HelpCommand implements Command {
             var builder = new StringBuilder();
 
             builder.append(command())
-                    .append(" - ")
+                    .append(DELIMITER)
                     .append(description())
                     .append("\n");
 
             commands.forEach(c -> builder
                     .append(c.command())
-                    .append(" - ")
+                    .append(DELIMITER)
                     .append(c.description())
                     .append("\n"));
 
