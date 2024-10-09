@@ -5,7 +5,7 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 
 
-public class CommandUtils {
+public final class CommandUtils {
     private CommandUtils() {
     }
 
