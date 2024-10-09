@@ -2,14 +2,21 @@ name: Bot Build
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths: [ .github/workflows/bot.yml, Bot/** ]
   pull_request:
     branches: [ master ]
     paths: [ .github/workflows/bot.yml, Bot/** ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        java-version: [21]
     permissions:
       contents: read
       packages: write
@@ -21,12 +28,21 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: ${{ matrix.java_version }}
           distribution: 'temurin'
           cache: maven
 
-      - name: maven build
-        run: mvn -pl Bot -am package
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      
+
+      - name: Maven build and verify
+        run: mvn -pl Bot -am verify
 
       - id: jacoco
         uses: madrapps/jacoco-report@v1.6.1
@@ -39,32 +55,64 @@ jobs:
           title: Code Coverage
           update-comment: true
 
+      - name: Archive test reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: Test-Reports
+          path: "**/target/surefire-reports/*"
 
-  Checkstyle:
-    name: checkstyle
+
+  checkstyle:
+    name: Checkstyle
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: ${{ matrix.java-version }}
           distribution: 'temurin'
           cache: maven
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
       - run: mvn -pl Bot -am checkstyle:check
 
-  Integration-test:
-    name: integration tests
+      - name: Archive Checkstyle report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: Checkstyle-Report
+          path: "**/target/checkstyle-result.xml"
+
+  integration-test:
+    name: Integration tests
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version:  ${{ matrix.java-version }}
           distribution: 'temurin'
           cache: maven
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
       - run: mvn -pl Bot -am verify -Dskip.unit.tests=true
 

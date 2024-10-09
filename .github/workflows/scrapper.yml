@@ -2,6 +2,9 @@ name: Scrapper Build
 
 on:
   workflow_dispatch:
+#  push:
+#    branches: [ master ]
+#    paths: [ .github/workflows/scrapper.yml, Scrapper/** ]
   pull_request:
     branches: [ master ]
     paths: [ .github/workflows/scrapper.yml, Scrapper/** ]
@@ -9,60 +12,102 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     name: Build
-    permissions:
-      packages: write
-      pull-requests: write
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        java-version: [ 21 ]
 
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: ${{ matrix.java_version }}
           distribution: 'temurin'
           cache: maven
 
-      - name: maven build
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Maven build
         run: mvn -pl Scrapper -am package
 
       - id: jacoco
         uses: madrapps/jacoco-report@v1.6.1
         if: ( github.event_name != 'workflow_dispatch' )
         with:
-          paths: ${{ github.workspace }}/bot/target/site/jacoco/jacoco.xml
+          paths: ${{ github.workspace }}/Scrapper/target/site/jacoco/jacoco.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           min-coverage-overall: 30
           min-coverage-changed-files: 30
           title: Code Coverage
           update-comment: true
 
+      - name: Archive test reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: Test-Reports
+          path: "**/target/surefire-reports/*"
+
 
   checkstyle:
-    name: checkstyle
+    name: Checkstyle
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: ${{ matrix.java_version }}
           distribution: 'temurin'
           cache: maven
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
       - run: mvn -pl Scrapper -am checkstyle:check
 
+      - name: Archive Checkstyle report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: Checkstyle-Report
+          path: "**/target/checkstyle-result.xml"
+
   integration-test:
-    name: integration tests
+    name: Integration tests
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: ${{ matrix.java_version }}
           distribution: 'temurin'
           cache: maven
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
       - run: mvn -pl Scrapper -am verify -Dskip.unit.tests=true
 
