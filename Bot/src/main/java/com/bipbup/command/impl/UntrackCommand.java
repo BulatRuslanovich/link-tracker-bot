@@ -1,10 +1,14 @@
 package com.bipbup.command.impl;
 
 import com.bipbup.command.Command;
+import com.bipbup.sender.impl.CommandUtils;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Component;
 
+import static com.bipbup.util.ResponseMessages.TRACK_INCORRECT_COMMAND;
+import static com.bipbup.util.ResponseMessages.TRACK_INCORRECT_FORMAT;
+import static com.bipbup.util.ResponseMessages.TRACK_SUCCESS;
 import static com.bipbup.util.ResponseMessages.UNTRACK_COMMAND;
 import static com.bipbup.util.ResponseMessages.UNTRACK_DESCRIPTION;
 import static com.bipbup.util.ResponseMessages.UNTRACK_INCORRECT_COMMAND;
@@ -26,17 +30,8 @@ public class UntrackCommand implements Command {
 
     @Override
     public SendMessage handle(Update update) {
-        var chatId = getChatId(update);
-        var pair = update.message().text().split(" ");
-
-        if (pair.length == 2) {
-            if (pair[0].equals(command())) {
-                return new SendMessage(chatId, UNTRACK_SUCCESS);
-            }
-
-            return new SendMessage(chatId, UNTRACK_INCORRECT_COMMAND);
-        }
-
-        return new SendMessage(chatId, UNTRACK_INCORRECT_FORMAT);
+        return CommandUtils.handleMessage(update,
+                this, UNTRACK_SUCCESS,
+                UNTRACK_INCORRECT_COMMAND, UNTRACK_INCORRECT_FORMAT);
     }
 }

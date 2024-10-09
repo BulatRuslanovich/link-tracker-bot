@@ -1,9 +1,10 @@
 package com.bipbup.processor.impl;
 
 import com.bipbup.command.Command;
-import com.bipbup.processor.Processor;
+import com.bipbup.processor.BotMessageProcessor;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +14,7 @@ import static com.bipbup.util.ResponseMessages.UNSUPPORTED_COMMAND;
 
 @RequiredArgsConstructor
 @Component
-public class MessageProcessor implements Processor {
+public class BotTextMessageProcessor implements BotMessageProcessor {
     private final List<Command> commands;
 
     @Override
@@ -21,7 +22,7 @@ public class MessageProcessor implements Processor {
         var chatId = update.message().chat().id();
         var notSupportedMessage = new SendMessage(chatId, UNSUPPORTED_COMMAND);
 
-        if (update.message().text() == null) {
+        if (StringUtil.isNullOrEmpty(update.message().text())) {
             return notSupportedMessage;
         }
 

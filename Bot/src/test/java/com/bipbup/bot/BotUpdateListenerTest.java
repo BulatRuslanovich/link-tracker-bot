@@ -5,7 +5,7 @@ import com.bipbup.command.impl.StartCommand;
 import com.bipbup.command.impl.TrackCommand;
 import com.bipbup.command.impl.UntrackCommand;
 import com.bipbup.sender.Sender;
-import com.bipbup.sender.impl.MessageSender;
+import com.bipbup.sender.impl.BotTextMessageSender;
 import com.pengrad.telegrambot.model.Update;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,7 +35,7 @@ class BotUpdateListenerTest {
                 new UntrackCommand()
         );
 
-        sender = mock(MessageSender.class);
+        sender = mock(BotTextMessageSender.class);
 
         listener = new BotUpdateListener(commands, sender);
     }

@@ -13,7 +13,7 @@ import static com.bipbup.util.CommandTestUtils.createMockUpdate;
 import static com.bipbup.util.ResponseMessages.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MessageProcessorTest {
+class BotTextMessageProcessorTest {
 
     @Test
     @DisplayName("Processor incorrect command test")
@@ -27,7 +27,7 @@ class MessageProcessorTest {
                 new UntrackCommand()
         );
 
-        var processor = new MessageProcessor(commands);
+        var processor = new BotTextMessageProcessor(commands);
 
         // when
         var message = processor.process(update);
@@ -48,7 +48,7 @@ class MessageProcessorTest {
                 new UntrackCommand()
         );
 
-        var processor = new MessageProcessor(commands);
+        var processor = new BotTextMessageProcessor(commands);
 
         // when
         var message = processor.process(update);

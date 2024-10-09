@@ -1,6 +1,7 @@
 package com.bipbup.command.impl;
 
 import com.bipbup.command.Command;
+import com.bipbup.sender.impl.CommandUtils;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Component;
@@ -26,17 +27,8 @@ public class TrackCommand implements Command {
 
     @Override
     public SendMessage handle(Update update) {
-        var chatId = getChatId(update);
-        var pair = update.message().text().split(" ");
-
-        if (pair.length == 2) {
-            if (pair[0].equals(command())) {
-                return new SendMessage(chatId, TRACK_SUCCESS);
-            }
-
-            return new SendMessage(chatId, TRACK_INCORRECT_COMMAND);
-        }
-
-        return new SendMessage(chatId, TRACK_INCORRECT_FORMAT);
+        return CommandUtils.handleMessage(update,
+                this, TRACK_SUCCESS,
+                TRACK_INCORRECT_COMMAND, TRACK_INCORRECT_FORMAT);
     }
 }

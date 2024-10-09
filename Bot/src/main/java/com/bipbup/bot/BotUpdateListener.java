@@ -1,8 +1,8 @@
 package com.bipbup.bot;
 
 import com.bipbup.command.Command;
-import com.bipbup.processor.Processor;
-import com.bipbup.processor.impl.MessageProcessor;
+import com.bipbup.processor.BotMessageProcessor;
+import com.bipbup.processor.impl.BotTextMessageProcessor;
 import com.bipbup.sender.Sender;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
@@ -13,11 +13,11 @@ import java.util.List;
 
 @Component
 public class BotUpdateListener implements UpdatesListener {
-    private final Processor processor;
+    private final BotMessageProcessor botMessageProcessor;
     private final Sender sender;
 
     public BotUpdateListener(List<Command> commands, Sender sender) {
-        this.processor = new MessageProcessor(commands);
+        this.botMessageProcessor = new BotTextMessageProcessor(commands);
         this.sender = sender;
     }
 
@@ -25,7 +25,7 @@ public class BotUpdateListener implements UpdatesListener {
     public int process(List<Update> updates) {
         updates.stream()
                 .filter(u -> u.editedMessage() == null)
-                .forEach(u -> sender.send(processor.process(u)));
+                .forEach(u -> sender.send(botMessageProcessor.process(u)));
 
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }

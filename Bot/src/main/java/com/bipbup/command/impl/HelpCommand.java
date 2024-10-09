@@ -35,23 +35,24 @@ public class HelpCommand implements Command {
     public SendMessage handle(Update update) {
         var chatId = getChatId(update);
 
-        if (update.message().text().equals(command())) {
-            var builder = new StringBuilder();
-
-            builder.append(command())
-                    .append(DELIMITER)
-                    .append(description())
-                    .append("\n");
-
-            commands.forEach(c -> builder
-                    .append(c.command())
-                    .append(DELIMITER)
-                    .append(c.description())
-                    .append("\n"));
-
-            return new SendMessage(chatId, builder.toString());
+        if (!update.message().text().equals(command())) {
+            return new SendMessage(chatId, DEFAULT_INCORRECT_COMMAND);
         }
 
-        return new SendMessage(chatId, DEFAULT_INCORRECT_COMMAND);
+        var builder = new StringBuilder();
+
+        builder.append(command())
+                .append(DELIMITER)
+                .append(description())
+                .append("\n");
+
+        commands.forEach(c -> builder
+                .append(c.command())
+                .append(DELIMITER)
+                .append(c.description())
+                .append("\n"));
+
+        return new SendMessage(chatId, builder.toString());
     }
 }
+

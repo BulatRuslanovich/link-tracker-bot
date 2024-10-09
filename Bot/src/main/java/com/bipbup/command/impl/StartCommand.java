@@ -28,12 +28,12 @@ public class StartCommand implements Command {
     public SendMessage handle(Update update) {
         var chatId = getChatId(update);
 
-        if (update.message().text().equals(command())) {
-            String sendMessage = String.format(WELCOME_TITLE, update.message().from().firstName())
-                    + WELCOME_MESSAGE;
-            return new SendMessage(chatId, sendMessage);
+        if (!update.message().text().equals(command())) {
+            return new SendMessage(chatId, DEFAULT_INCORRECT_COMMAND);
         }
 
-        return new SendMessage(chatId, DEFAULT_INCORRECT_COMMAND);
+        String sendMessage = String.format(WELCOME_TITLE, update.message().from().firstName())
+                + WELCOME_MESSAGE;
+        return new SendMessage(chatId, sendMessage);
     }
 }

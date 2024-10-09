@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class MessageSender implements Sender {
+public class BotTextMessageSender implements Sender {
     private final TelegramBot telegramBot;
 
     @Override

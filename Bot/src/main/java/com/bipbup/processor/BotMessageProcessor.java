@@ -3,6 +3,6 @@ package com.bipbup.processor;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 
-public interface Processor {
+public interface BotMessageProcessor {
     SendMessage process(Update update);
 }
