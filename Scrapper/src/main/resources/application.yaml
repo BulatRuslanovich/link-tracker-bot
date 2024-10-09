@@ -8,5 +8,8 @@ server:
 spring:
   application:
     name: Scrapper
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
 logging:
   config: classpath:log4j2-plain.xml
