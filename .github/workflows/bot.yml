@@ -15,8 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
-      matrix:
-        java-version: [21]
     permissions:
       contents: read
       packages: write
@@ -28,7 +26,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-java@v4
         with:
-          java-version: ${{ matrix.java_version }}
+          java-version: '21'
           distribution: 'temurin'
           cache: maven
 
@@ -72,7 +70,7 @@ jobs:
 
       - uses: actions/setup-java@v4
         with:
-          java-version: ${{ matrix.java-version }}
+          java-version: '21'
           distribution: 'temurin'
           cache: maven
 
@@ -102,7 +100,7 @@ jobs:
 
       - uses: actions/setup-java@v4
         with:
-          java-version:  ${{ matrix.java-version }}
+          java-version:  '21'
           distribution: 'temurin'
           cache: maven
 
