@@ -40,7 +40,7 @@ jobs:
           update-comment: true
 
 
-  checkstyle:
+  Checkstyle:
     name: checkstyle
     runs-on: ubuntu-latest
 
@@ -54,7 +54,7 @@ jobs:
 
       - run: mvn -pl Bot -am checkstyle:check
 
-  integration-test:
+  Integration-test:
     name: integration tests
     runs-on: ubuntu-latest
 
