@@ -30,15 +30,6 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-      
-
       - name: Maven build and verify
         run: mvn -pl Bot -am verify
 
@@ -53,14 +44,6 @@ jobs:
           title: Code Coverage
           update-comment: true
 
-      - name: Archive test reports
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: Test-Reports
-          path: "**/target/surefire-reports/*"
-
-
   checkstyle:
     name: Checkstyle
     runs-on: ubuntu-latest
@@ -74,22 +57,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
       - run: mvn -pl Bot -am checkstyle:check
-
-      - name: Archive Checkstyle report
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: Checkstyle-Report
-          path: "**/target/checkstyle-result.xml"
 
   integration-test:
     name: Integration tests
@@ -100,17 +68,8 @@ jobs:
 
       - uses: actions/setup-java@v4
         with:
-          java-version:  '21'
+          java-version: '21'
           distribution: 'temurin'
           cache: maven
 
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
       - run: mvn -pl Bot -am verify -Dskip.unit.tests=true
-

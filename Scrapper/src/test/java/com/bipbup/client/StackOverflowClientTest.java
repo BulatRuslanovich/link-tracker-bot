@@ -9,7 +9,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
-import java.util.Objects;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -19,24 +18,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class StackOverflowClientTest {
 
-    private WireMockServer wireMockServer;
-
-    private StackOverflowQuestionDTO resultDTO;
+    public static final String TEST_QUESTION =
+            "Why is processing a sorted array faster than processing an unsorted array?";
 
     private static final String TEST_LINK =
             "https://stackoverflow.com/questions/11227809/why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array";
 
     private static final OffsetDateTime TEST_UPDATE_TIME = OffsetDateTime.parse("2024-01-23T14:58:43Z");
 
-    public static final String TEST_QUESTION =
-            "Why is processing a sorted array faster than processing an unsorted array?";
+    private static final Integer TEST_ID = 11227809;
 
     private static final String TEST_JSON = """
-        {"items": [{"tags": ["java", "c++", "performance", "cpu-architecture", "branch-prediction"],
-            "last_activity_date": 1706021923,
-            "title": "Why is processing a sorted array faster than processing an unsorted array?"
-        }]}
-        """;
+            {"items": [{"tags": ["java", "c++", "performance", "cpu-architecture", "branch-prediction"],
+                "last_activity_date": 1706021923,
+                "title": "Why is processing a sorted array faster than processing an unsorted array?"
+            }]}
+            """;
+
+    private WireMockServer wireMockServer;
+
+    private StackOverflowQuestionDTO resultDTO;
 
     @BeforeEach
     public void setup() {
@@ -57,19 +58,19 @@ class StackOverflowClientTest {
     @DisplayName("Get info about question from StackOverflow api")
     void fetchQuestionsInfo_returnsResultDTO() {
         // given
-        stubFor(get(urlEqualTo("/questions/" + TEST_LINK + "/?site=stackoverflow"))
+        stubFor(get(urlEqualTo("/questions/" + TEST_ID + "/?site=stackoverflow"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBody(TEST_JSON)));
 
-        var stackOverflowClient = new StackOverflowClient();
+        var stackOverflowClient = new StackOverflowClient(wireMockServer.baseUrl());
 
         // when
         var response = stackOverflowClient.fetchQuestionsInfo(TEST_LINK);
         var responseData = response.block();
 
         // then
-        assertEquals(Objects.requireNonNull(responseData).getQuestionText(), resultDTO.getQuestionText());
+        assertEquals(responseData, resultDTO);
     }
 }

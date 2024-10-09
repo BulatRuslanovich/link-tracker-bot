@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GitHubClientTest {
 
-    private static final OffsetDateTime TEST_UPDATE_TIME = OffsetDateTime.parse("2024-07-12T15:06:09Z");
+    private static final OffsetDateTime TEST_UPDATE_TIME = OffsetDateTime.parse("2010-10-10T10:10:10Z");
 
     private static final String TEST_USER_NAME = "BulatRuslanovich";
 
@@ -50,12 +50,6 @@ class GitHubClientTest {
         wireMockServer.stop();
     }
 
-    /**
-     * Tests the retrieval of repository information from the GitHub API.
-     * <p>
-     * Note: This test is fragile as it relies on the state of the repository
-     * located at <a href="https://github.com/BulatRuslanovich/LolCat">LolCat</a>.
-     */
     @Test
     @DisplayName("Get info about repo from GitHub api")
     void fetchReposInfo_returnResultDTO() {
@@ -66,7 +60,7 @@ class GitHubClientTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody(TEST_JSON)));
 
-        var gitHubClient = new GitHubClient();
+        var gitHubClient = new GitHubClient(wireMockServer.baseUrl());
 
         // when
         var response = gitHubClient.fetchReposInfo(TEST_LINK);

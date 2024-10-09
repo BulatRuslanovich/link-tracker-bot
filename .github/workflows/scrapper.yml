@@ -2,9 +2,9 @@ name: Scrapper Build
 
 on:
   workflow_dispatch:
-#  push:
-#    branches: [ master ]
-#    paths: [ .github/workflows/scrapper.yml, Scrapper/** ]
+  push:
+    branches: [ master ]
+    paths: [ .github/workflows/scrapper.yml, Scrapper/** ]
   pull_request:
     branches: [ master ]
     paths: [ .github/workflows/scrapper.yml, Scrapper/** ]
@@ -17,7 +17,6 @@ jobs:
     strategy:
       fail-fast: true
 
-
     steps:
       - uses: actions/checkout@v4
 
@@ -26,14 +25,6 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
 
       - name: Maven build
         run: mvn -pl Scrapper -am package
@@ -49,18 +40,9 @@ jobs:
           title: Code Coverage
           update-comment: true
 
-      - name: Archive test reports
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: Test-Reports
-          path: "**/target/surefire-reports/*"
-
-
   checkstyle:
     name: Checkstyle
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -70,22 +52,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
       - run: mvn -pl Scrapper -am checkstyle:check
-
-      - name: Archive Checkstyle report
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: Checkstyle-Report
-          path: "**/target/checkstyle-result.xml"
 
   integration-test:
     name: Integration tests
@@ -100,13 +67,4 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
       - run: mvn -pl Scrapper -am verify -Dskip.unit.tests=true
-
