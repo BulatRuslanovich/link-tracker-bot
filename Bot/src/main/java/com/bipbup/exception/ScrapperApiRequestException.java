@@ -1,13 +1,13 @@
-package com.bipbup.exceptions;
+package com.bipbup.exception;
 
-import com.bipbup.controller.dto.responce.ApiErrorResponse;
+import com.bipbup.controller.dto.response.ApiErrorResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
-public class BotApiRequestException extends RuntimeException {
+public class ScrapperApiRequestException extends RuntimeException {
     private final ApiErrorResponse apiErrorResponse;
     private final HttpStatus httpStatus;
 

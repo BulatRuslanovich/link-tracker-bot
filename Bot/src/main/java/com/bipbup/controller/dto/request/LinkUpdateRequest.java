@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.List;
 
 public record LinkUpdateRequest(
-        @Min(value = 0, message = "ID should be more or equal 0")
+        @Min(value = 1, message = "ID should be more or equal 0")
         long id,
         @NotNull(message = "URL should not be null")
         URL url,

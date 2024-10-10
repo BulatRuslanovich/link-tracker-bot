@@ -1,4 +1,4 @@
-package com.bipbup.exeption.handler;
+package com.bipbup.exception.advice;
 
 import com.bipbup.controller.dto.response.ApiErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
-public class UpdateExceptionsService {
+public class UpdateExceptionsAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

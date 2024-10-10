@@ -1,8 +1,8 @@
 package com.bipbup.config;
 
+import com.bipbup.config.properties.BotProperties;
 import com.pengrad.telegrambot.TelegramBot;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,8 +10,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class TelegramBotConfig {
 
+    private final BotProperties botProperties;
+
     @Bean
-    public TelegramBot telegramBot(@Value("${bot.token}") String token) {
-        return new TelegramBot(token);
+    public TelegramBot telegramBot() {
+        return new TelegramBot(botProperties.getToken());
     }
 }

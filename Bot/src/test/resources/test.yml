@@ -19,4 +19,4 @@ logging:
 
 clients:
   scrapper:
-    base-uri: https://lol.com
+    base-uri: http://localhost:9091
